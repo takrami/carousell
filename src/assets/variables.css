@@ -1,0 +1,12 @@
+:root {
+  /* SPACING */
+  --spacing: 4px;
+
+  /* COLOR PALLET */
+  --primaryColor: #4a566e;
+  --secondaryColor: #00b595;
+  --subColor: #ffcb1c;
+
+  /* FONTS */
+  --primaryFont: "Roboto", sans-serif;
+}
