@@ -1,25 +1,10 @@
-import { SliderItemInterface } from "../../types";
+import React from "react";
 
-import {
-  Container,
-  Image,
-  Caption,
-  CaptionTitle,
-  CaptionDescription,
-} from "./style";
+import { SliderItemProps } from "../../types";
+import { Container } from "./style";
 
-const SliderItem: React.FC<{
-  sliderItem: SliderItemInterface;
-}> = ({ sliderItem }) => {
-  return (
-    <Container>
-      <Image src={sliderItem.image} alt={sliderItem.title} />
-      <Caption>
-        <CaptionTitle>{sliderItem.title}</CaptionTitle>
-        <CaptionDescription>{sliderItem.description}</CaptionDescription>
-      </Caption>
-    </Container>
-  );
+const SliderItem: React.FC<SliderItemProps> = ({ children }) => {
+  return <Container>{children}</Container>;
 };
 
 export { SliderItem };

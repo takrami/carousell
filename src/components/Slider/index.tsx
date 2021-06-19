@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-import { SliderItem } from "../SliderItem";
 import { useWidth } from "../../hooks/utils";
-import { SliderProps } from "./types";
+import { SliderProps, SliderConfig } from "../../types";
 
 import {
   Container,
@@ -13,13 +12,23 @@ import {
   Dot,
 } from "./style";
 
-const Slider: React.FC<SliderProps> = ({
-  slides,
-  autoPlay = false,
-  showArrows = true,
-  showDots = true,
-  maxWidth = "100%",
-}) => {
+const DefaultNextButton = () => <span>next</span>;
+const DefaultPrevButton = () => <span>Prev</span>;
+
+const initialConfig: SliderConfig = {
+  autoPlay: false,
+  showArrows: true,
+  maxWidth: "100%",
+  dots: true,
+  dotsSize: "red",
+  dotsDefaultColor: "red",
+  dotsHoverColor: "blue",
+  dotsActiveColor: "black",
+  nextArrow: DefaultNextButton,
+  prevArrow: DefaultPrevButton,
+};
+
+const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [dragStart, setDragStart] = useState<number>(0);
   const [dragEnd, setDragEnd] = useState<number>(0);
@@ -29,7 +38,11 @@ const Slider: React.FC<SliderProps> = ({
 
   const width: number = useWidth(sliderContainerRef);
 
-  const slidesLength: number = slides.length;
+  const config = { ...initialConfig, ...(passedConfig || {}) };
+
+  console.log(config);
+
+  const slidesLength: number = Array.isArray(children) ? children.length : 1;
 
   const nextSlide = useCallback((): void => {
     setCurrentIndex(currentIndex === slidesLength - 1 ? 0 : currentIndex + 1);
@@ -49,19 +62,19 @@ const Slider: React.FC<SliderProps> = ({
 
   // It gets delay from data file
   useEffect(() => {
-    setDelay(slides[currentIndex].delay);
-  }, [currentIndex, slides]);
+    setDelay(200);
+  }, [currentIndex]);
 
   // When autoplay is true and it is not hovered slides go automatically. When slide is hovered it pauses the slideshow.
   useEffect(() => {
-    if (autoPlay && !isHovered) {
+    if (config.autoPlay && !isHovered) {
       const timeout = setTimeout(() => {
         nextSlide();
       }, delay);
       return () => clearTimeout(timeout);
     }
     return;
-  }, [autoPlay, delay, isHovered, nextSlide]);
+  }, [config.autoPlay, delay, isHovered, nextSlide]);
 
   useEffect(() => {
     const handleKeyNavigation = (e: KeyboardEvent) => {
@@ -83,7 +96,7 @@ const Slider: React.FC<SliderProps> = ({
 
   return (
     <Container
-      maxWidth={maxWidth}
+      maxWidth={config.maxWidth}
       aria-label="Minimal Images"
       ref={sliderContainerRef}
       onDragStart={(e) => {
@@ -110,23 +123,21 @@ const Slider: React.FC<SliderProps> = ({
         currentIndex={currentIndex}
         slideWidth={width}
       >
-        {slides.map((slide) => {
-          return <SliderItem key={slide.id} sliderItem={slide} />;
-        })}
+        {children}
       </List>
-      {showArrows && (
+      {config.showArrows && (
         <>
           <NextButton aria-label="Next Slide" onClick={nextSlide}>
-            Next
+            <config.nextArrow />
           </NextButton>
           <PrevButton aria-label="Previous Slide" onClick={prevSlide}>
-            Previous
+            <config.prevArrow />
           </PrevButton>
         </>
       )}
-      {showDots && (
+      {config.dots && Array.isArray(children) && (
         <DotsContainer>
-          {slides.map((slide, index) => {
+          {children.map((slide: any, index: number) => {
             return (
               <Dot
                 aria-label={`Slide ${currentIndex}`}
@@ -135,6 +146,10 @@ const Slider: React.FC<SliderProps> = ({
                 onClick={() => {
                   setCurrentIndex(index);
                 }}
+                dotsDefaultColor={config.dotsDefaultColor}
+                dotsActiveColor={config.dotsActiveColor}
+                dotsHoverColor={config.dotsHoverColor}
+                dotsSize={config.dotsSize}
               />
             );
           })}

@@ -5,7 +5,7 @@ const Container = styled.li`
   width: 100%;
 `;
 
-const Image = styled.img`
+/* const Image = styled.img`
   width: 100%;
   height: 100%;
 `;
@@ -47,6 +47,6 @@ const CaptionDescription = styled.p`
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
-`;
+`; */
 
-export { Container, Image, Caption, CaptionTitle, CaptionDescription };
+export { Container };

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { DotsConfig } from "../../types";
 
 const Container = styled.div<{
   maxWidth: string;
@@ -60,15 +61,15 @@ const DotsContainer = styled.ol`
   padding: calc(var(--spacing) * 4);
 `;
 
-const Dot = styled.li<{ isActive: boolean }>`
+const Dot = styled.li<Omit<DotsConfig, "dots">>`
   display: block;
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: ${({ isActive }) =>
-    isActive ? "var(--primaryColor)" : "var(--secondaryColor)"};
+  background-color: ${({ isActive, dotsDefaultColor, dotsActiveColor }) =>
+    isActive ? dotsActiveColor : dotsDefaultColor};
   &:hover {
-    color: var(--primaryColor);
+    background-color: ${({ dotsHoverColor }) => dotsHoverColor};
     transform: scale(1.2);
   }
 `;
