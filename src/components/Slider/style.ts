@@ -1,8 +1,10 @@
 import styled from "styled-components";
 
-const Container = styled.div`
+const Container = styled.div<{
+  maxWidth: string;
+}>`
   position: relative;
-  width: 100%;
+  width: ${({ maxWidth }) => maxWidth};
   overflow: hidden;
   border-radius: 4px;
   cursor: grab;
@@ -13,6 +15,8 @@ const List = styled.ol<{
   currentIndex: number;
   slideWidth: number;
 }>`
+  padding: 0;
+  list-style-type: none;
   display: flex;
   transition: transform 1s ease;
   width: ${({ sliderContainerWidth }) => `${sliderContainerWidth}px`};

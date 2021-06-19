@@ -5,4 +5,5 @@ export interface SliderProps {
   autoPlay?: boolean;
   showArrows?: boolean;
   showDots?: boolean;
+  maxWidth?: string;
 }

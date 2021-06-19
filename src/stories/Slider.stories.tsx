@@ -17,3 +17,9 @@ export const Basic = Template.bind({});
 Basic.args = {
   slides: items,
 };
+
+export const Wrapped = Template.bind({});
+Wrapped.args = {
+  slides: items,
+  maxWidth: "600px",
+};

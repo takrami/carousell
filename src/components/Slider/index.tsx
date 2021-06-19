@@ -18,6 +18,7 @@ const Slider: React.FC<SliderProps> = ({
   autoPlay = false,
   showArrows = true,
   showDots = true,
+  maxWidth = "100%",
 }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [dragStart, setDragStart] = useState<number>(0);
@@ -82,6 +83,7 @@ const Slider: React.FC<SliderProps> = ({
 
   return (
     <Container
+      maxWidth={maxWidth}
       aria-label="Minimal Images"
       ref={sliderContainerRef}
       onDragStart={(e) => {
