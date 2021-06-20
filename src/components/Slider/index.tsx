@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
-import { useWidth } from "../../hooks/utils";
-import { SliderProps, SliderConfig } from "../../types";
+import { useWidth } from "../../hooks";
+import { getConfig } from "../../utils";
+import { SliderProps } from "../../types";
 
 import {
   Container,
@@ -12,22 +13,6 @@ import {
   Dot,
 } from "./style";
 
-const DefaultNextButton = () => <span>next</span>;
-const DefaultPrevButton = () => <span>Prev</span>;
-
-const initialConfig: SliderConfig = {
-  autoPlay: false,
-  showArrows: true,
-  maxWidth: "100%",
-  dots: true,
-  dotsSize: "red",
-  dotsDefaultColor: "red",
-  dotsHoverColor: "blue",
-  dotsActiveColor: "black",
-  nextArrow: DefaultNextButton,
-  prevArrow: DefaultPrevButton,
-};
-
 const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [dragStart, setDragStart] = useState<number>(0);
@@ -37,11 +22,7 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const sliderContainerRef = useRef<HTMLDivElement>(null);
 
   const width: number = useWidth(sliderContainerRef);
-
-  const config = { ...initialConfig, ...(passedConfig || {}) };
-
-  console.log(config);
-
+  const config = getConfig(passedConfig);
   const slidesLength: number = Array.isArray(children) ? children.length : 1;
 
   const nextSlide = useCallback((): void => {
@@ -122,6 +103,7 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
         sliderContainerWidth={width * slidesLength}
         currentIndex={currentIndex}
         slideWidth={width}
+        animationType={config.animationType}
       >
         {children}
       </List>

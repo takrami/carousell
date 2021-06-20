@@ -4,7 +4,6 @@ interface DotsConfig {
   dotsDefaultColor: string;
   dotsHoverColor: string;
   dotsActiveColor: string;
-  isActive: boolean;
 }
 
 interface ArrowsConfig {
@@ -16,18 +15,27 @@ interface GlobalConfig {
   autoPlay: boolean;
   maxWidth: string;
   showArrows: boolean;
+  animationType: AnimationType;
 }
 
-type SliderConfig = GlobalConfig & Omit<DotsConfig, "isActive"> & ArrowsConfig;
-
-interface SliderProps extends SliderConfig {
+interface ChildrenProp {
   children:
     | React.ReactElement<SliderItemProps>
     | React.ReactElement<SliderItemProps>[];
 }
 
+type AnimationType = "lazy" | "fade" | "none";
+type SliderConfig = GlobalConfig & DotsConfig & ArrowsConfig;
+type SliderProps = Partial<SliderConfig> & ChildrenProp;
+
 interface SliderItemProps {
   children: any;
 }
 
-export type { SliderConfig, SliderProps, SliderItemProps, DotsConfig };
+export type {
+  SliderConfig,
+  SliderProps,
+  SliderItemProps,
+  DotsConfig,
+  AnimationType,
+};

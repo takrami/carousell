@@ -1,8 +1,8 @@
-import React from "react";
 import { Story, Meta } from "@storybook/react";
 
 import { Slider, SliderItem } from "../";
 import { SliderProps } from "../types";
+import { defaultConfig } from "../constants";
 
 export default {
   title: "Slider",
@@ -11,31 +11,17 @@ export default {
 
 const Template: Story<SliderProps> = (args) => (
   <Slider {...args}>
-    <SliderItem>ati</SliderItem>
-    <SliderItem>
-      <div style={{ height: "500px" }}>atefeh</div>
+    <SliderItem key={0}>
+      <div style={{ backgroundColor: "red", height: "500px" }}>1</div>
     </SliderItem>
-    <SliderItem>x</SliderItem>
+    <SliderItem key={1}>
+      <div style={{ backgroundColor: "blue", height: "500px" }}>2</div>
+    </SliderItem>
+    <SliderItem key={2}>
+      <div style={{ backgroundColor: "green", height: "500px" }}>3</div>
+    </SliderItem>
   </Slider>
 );
 
-const CustomNext = () => <span>{">>>"}</span>;
-
 export const Basic = Template.bind({});
-Basic.args = {
-  nextArrow: CustomNext,
-};
-
-/* const Template: Story<SliderProps> = (args) => <Slider {...args} />;
-
-export const Basic = Template.bind({});
-Basic.args = {
-  slides: items,
-};
-
-export const Wrapped = Template.bind({});
-Wrapped.args = {
-  slides: items,
-  maxWidth: "600px",
-};
- */
+Basic.args = { ...defaultConfig };

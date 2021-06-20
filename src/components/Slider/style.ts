@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { DotsConfig } from "../../types";
+import { AnimationType, DotsConfig } from "../../types";
 
 const Container = styled.div<{
   maxWidth: string;
@@ -15,56 +15,78 @@ const List = styled.ol<{
   sliderContainerWidth: number;
   currentIndex: number;
   slideWidth: number;
+  animationType: AnimationType;
 }>`
   padding: 0;
   list-style-type: none;
   display: flex;
-  transition: transform 1s ease;
   width: ${({ sliderContainerWidth }) => `${sliderContainerWidth}px`};
-  transform: ${({ currentIndex, slideWidth }) =>
+  transform: ${({ slideWidth, currentIndex }) =>
     `translate3d(-${currentIndex * slideWidth}px, 0px, 0px)`};
+  ${({ animationType, currentIndex }) => {
+    switch (animationType) {
+      case "lazy":
+        return `
+          transition: transform 1s ease;
+        `;
+      case "fade":
+        return `
+          &>li {
+            opacity: 0;
+          }
+        
+          &>li:nth-child(${currentIndex + 1}) {
+            transition: opacity 2s ease;
+            opacity: 1;
+          }
+        `;
+      case "none":
+      default:
+        return "";
+    }
+  }};
 `;
 
 const Button = styled.button`
-  color: var(--secondaryColor);
   position: absolute;
-  bottom: 0%;
-  font-size: 1.5rem;
+  transform: translateY(-100%);
+  bottom: 0;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+  background-color: transparent;
+  border: none;
   @media only screen and (min-width: 768px) {
-    bottom: 50%;
-    font-size: 3rem;
+    transform: translateY(-50%);
+    top: 50%;
     &:hover {
-      color: var(--primaryColor);
-      transform: scale(1.2);
+      transform: translateY(-50%) scale(1.2);
     }
   }
 `;
 
 const NextButton = styled(Button)`
-  right: 1%;
+  right: 16px;
 `;
 
 const PrevButton = styled(Button)`
-  left: 1%;
+  left: 16px;
 `;
 
 const DotsContainer = styled.ol`
   position: absolute;
   display: flex;
-  gap: 8px;
-  bottom: 0;
+  gap: 12px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
   cursor: pointer;
-  padding: calc(var(--spacing) * 4);
+  padding: 0;
 `;
 
-const Dot = styled.li<Omit<DotsConfig, "dots">>`
+const Dot = styled.li<Omit<DotsConfig, "dots"> & { isActive: boolean }>`
   display: block;
-  width: 10px;
-  height: 10px;
+  width: ${({ dotsSize }) => dotsSize};
+  height: ${({ dotsSize }) => dotsSize};
   border-radius: 50%;
   background-color: ${({ isActive, dotsDefaultColor, dotsActiveColor }) =>
     isActive ? dotsActiveColor : dotsDefaultColor};
