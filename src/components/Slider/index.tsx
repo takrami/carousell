@@ -23,11 +23,13 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
 
   const width: number = useWidth(sliderContainerRef);
   const config = getConfig(passedConfig);
-  const slidesLength: number = Array.isArray(children) ? children.length : 1;
+  const slidesToShow = config.slidesToShow || 1;
+  const itemsCount: number = Array.isArray(children) ? children.length : 1;
+  const slidesCount: number = Math.ceil(itemsCount / slidesToShow);
 
   const nextSlide = useCallback((): void => {
     if (disableArrow !== "next") {
-      if (currentIndex === slidesLength - 1) {
+      if (currentIndex === slidesCount - 1) {
         if (config.loop) {
           setCurrentIndex(0);
         }
@@ -35,26 +37,26 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
         setCurrentIndex(currentIndex + 1);
       }
     }
-  }, [currentIndex, slidesLength]);
+  }, [currentIndex, slidesCount]);
 
   const prevSlide = useCallback((): void => {
     if (disableArrow !== "prev") {
       if (currentIndex === 0) {
         if (config.loop) {
-          setCurrentIndex(slidesLength - 1);
+          setCurrentIndex(slidesCount - 1);
         }
       } else {
         setCurrentIndex(currentIndex - 1);
       }
     }
-  }, [currentIndex, slidesLength]);
+  }, [currentIndex, slidesCount]);
 
   useEffect(() => {
     if (!config.loop) {
-      if (currentIndex !== 0 && currentIndex !== slidesLength - 1) {
+      if (currentIndex !== 0 && currentIndex !== slidesCount - 1) {
         setDisableArrow("");
       }
-      if (currentIndex === slidesLength - 1) {
+      if (currentIndex === slidesCount - 1) {
         setDisableArrow("next");
         config.onSlideEnd(currentIndex);
       }
@@ -63,7 +65,7 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
         config.onSlideStart(currentIndex);
       }
     }
-  }, [config.loop, currentIndex]);
+  }, [config.loop, slidesCount]);
 
   useEffect(() => {
     config.onSlideChange(currentIndex);
@@ -131,9 +133,11 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
       onMouseLeave={() => setIsHovered(false)}
     >
       <List
-        sliderContainerWidth={width * slidesLength}
+        sliderContainerWidth={width * itemsCount}
         currentIndex={currentIndex}
         slideWidth={width}
+        slidesToShow={slidesToShow}
+        itemsCount={itemsCount}
         animationType={config.animationType}
       >
         {children}
@@ -156,13 +160,13 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
           </PrevButton>
         </>
       )}
-      {config.dots && Array.isArray(children) && (
+      {config.dots && itemsCount > 0 && (
         <DotsContainer>
-          {children.map((slide: any, index: number) => {
+          {Array.from(Array(slidesCount).keys()).map((index: number) => {
             return (
               <Dot
                 aria-label={`Slide ${currentIndex}`}
-                key={slide.id}
+                key={index}
                 isActive={index === currentIndex}
                 onClick={() => {
                   setCurrentIndex(index);

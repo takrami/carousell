@@ -18,6 +18,7 @@ interface GlobalConfig {
   animationType: AnimationType;
   delay: number;
   loop: boolean;
+  slidesToShow: number;
   onSlideChange: (index: number) => void;
   onSlideStart: (index: number) => void;
   onSlideEnd: (index: number) => void;

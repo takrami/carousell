@@ -15,14 +15,21 @@ const List = styled.ol<{
   sliderContainerWidth: number;
   currentIndex: number;
   slideWidth: number;
+  slidesToShow: number;
+  itemsCount: number;
   animationType: AnimationType;
 }>`
   padding: 0;
   list-style-type: none;
   display: flex;
-  width: ${({ sliderContainerWidth }) => `${sliderContainerWidth}px`};
+  width: ${({ sliderContainerWidth, slidesToShow }) =>
+    `${sliderContainerWidth / slidesToShow}px`};
   transform: ${({ slideWidth, currentIndex }) =>
     `translate3d(-${currentIndex * slideWidth}px, 0px, 0px)`};
+  & > li {
+    width: ${({ sliderContainerWidth, slidesToShow, itemsCount }) =>
+      `${sliderContainerWidth / slidesToShow / itemsCount}px`};
+  }
   ${({ animationType, currentIndex }) => {
     switch (animationType) {
       case "lazy":
