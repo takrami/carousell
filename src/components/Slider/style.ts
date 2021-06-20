@@ -24,12 +24,32 @@ const List = styled.ol<{
   display: flex;
   width: ${({ sliderContainerWidth, slidesToShow }) =>
     `${sliderContainerWidth / slidesToShow}px`};
-  transform: ${({ slideWidth, currentIndex }) =>
-    `translate3d(-${currentIndex * slideWidth}px, 0px, 0px)`};
+
+  transform: ${({
+    slideWidth,
+    currentIndex,
+    itemsCount,
+    slidesToShow,
+    sliderContainerWidth,
+  }) => {
+    const mod: number = itemsCount % slidesToShow;
+    const itemWidth: number = sliderContainerWidth / slidesToShow / itemsCount;
+    let translateX: number;
+
+    if (itemsCount - mod === currentIndex * slidesToShow) {
+      translateX = currentIndex * slideWidth - itemWidth * mod;
+    } else {
+      translateX = currentIndex * slideWidth;
+    }
+
+    return `translate3d(-${translateX}px, 0px, 0px)`;
+  }};
+
   & > li {
     width: ${({ sliderContainerWidth, slidesToShow, itemsCount }) =>
       `${sliderContainerWidth / slidesToShow / itemsCount}px`};
   }
+
   ${({ animationType, currentIndex }) => {
     switch (animationType) {
       case "lazy":

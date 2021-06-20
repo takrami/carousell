@@ -11,21 +11,25 @@ export default {
 
 const Template: Story<SliderProps> = (args) => (
   <Slider {...args}>
-    <SliderItem key={0}>
-      <div style={{ backgroundColor: "red", height: "500px" }}>1</div>
-    </SliderItem>
-    <SliderItem key={1}>
-      <div style={{ backgroundColor: "blue", height: "500px" }}>2</div>
-    </SliderItem>
-    <SliderItem key={2}>
-      <div style={{ backgroundColor: "green", height: "500px" }}>3</div>
-    </SliderItem>
-    <SliderItem key={3}>
-      <div style={{ backgroundColor: "purple", height: "500px" }}>4</div>
-    </SliderItem>
-    <SliderItem key={4}>
-      <div style={{ backgroundColor: "black", height: "500px" }}>5</div>
-    </SliderItem>
+    {Array.from(Array(15).keys()).map((index) => {
+      return (
+        <SliderItem key={index}>
+          <div
+            style={{
+              backgroundColor: "black",
+              height: "500px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              color: "#fff",
+              fontSize: "36px",
+            }}
+          >
+            <div>{index}</div>
+          </div>
+        </SliderItem>
+      );
+    })}
   </Slider>
 );
 
