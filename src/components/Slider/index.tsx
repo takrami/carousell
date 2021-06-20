@@ -56,9 +56,11 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
       }
       if (currentIndex === slidesLength - 1) {
         setDisableArrow("next");
+        config.onSlideEnd(currentIndex);
       }
       if (currentIndex === 0) {
         setDisableArrow("prev");
+        config.onSlideStart(currentIndex);
       }
     }
   }, [config.loop, currentIndex]);

@@ -19,6 +19,8 @@ interface GlobalConfig {
   delay: number;
   loop: boolean;
   onSlideChange: (index: number) => void;
+  onSlideStart: (index: number) => void;
+  onSlideEnd: (index: number) => void;
 }
 
 interface ChildrenProp {

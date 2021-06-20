@@ -17,4 +17,6 @@ export const defaultConfig: SliderConfig = {
   delay: 2000,
   loop: true,
   onSlideChange: () => undefined,
+  onSlideStart: () => undefined,
+  onSlideEnd: () => undefined,
 };
