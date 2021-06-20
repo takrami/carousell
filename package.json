@@ -1,5 +1,5 @@
 {
-  "name": "carousell",
+  "name": "other-slider",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/cjs/index.js",
@@ -7,11 +7,11 @@
   "types": "./dist/esm/index.d.ts",
   "private": false,
   "repository": {
-    "url": "https://github.com/takrami/carousell",
+    "url": "https://github.com/takrami/other-slider",
     "type": "git"
   },
   "bugs": {
-    "url": "https://github.com/takrami/carousell/issues"
+    "url": "https://github.com/takrami/other-slider/issues"
   },
   "scripts": {
     "build": "yarn build:esm && yarn build:cjs",
