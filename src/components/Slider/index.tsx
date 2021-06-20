@@ -63,8 +63,6 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
     }
   }, [config.loop, currentIndex]);
 
-  console.log(disableArrow);
-
   const onDrag = (): void => {
     if (dragStart < dragEnd) {
       prevSlide();
