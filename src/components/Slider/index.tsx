@@ -15,6 +15,7 @@ import {
 
 const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [disableArrow, setDisableArrow] = useState<"" | "next" | "prev">("");
   const [dragStart, setDragStart] = useState<number>(0);
   const [dragEnd, setDragEnd] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -25,12 +26,44 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const slidesLength: number = Array.isArray(children) ? children.length : 1;
 
   const nextSlide = useCallback((): void => {
-    setCurrentIndex(currentIndex === slidesLength - 1 ? 0 : currentIndex + 1);
+    if (disableArrow !== "next") {
+      if (currentIndex === slidesLength - 1) {
+        if (config.loop) {
+          setCurrentIndex(0);
+        }
+      } else {
+        setCurrentIndex(currentIndex + 1);
+      }
+    }
   }, [currentIndex, slidesLength]);
 
   const prevSlide = useCallback((): void => {
-    setCurrentIndex(currentIndex === 0 ? slidesLength - 1 : currentIndex - 1);
+    if (disableArrow !== "prev") {
+      if (currentIndex === 0) {
+        if (config.loop) {
+          setCurrentIndex(slidesLength - 1);
+        }
+      } else {
+        setCurrentIndex(currentIndex - 1);
+      }
+    }
   }, [currentIndex, slidesLength]);
+
+  useEffect(() => {
+    if (!config.loop) {
+      if (currentIndex !== 0 && currentIndex !== slidesLength - 1) {
+        setDisableArrow("");
+      }
+      if (currentIndex === slidesLength - 1) {
+        setDisableArrow("next");
+      }
+      if (currentIndex === 0) {
+        setDisableArrow("prev");
+      }
+    }
+  }, [config.loop, currentIndex]);
+
+  console.log(disableArrow);
 
   const onDrag = (): void => {
     if (dragStart < dragEnd) {
@@ -103,10 +136,18 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
       </List>
       {config.showArrows && (
         <>
-          <NextButton aria-label="Next Slide" onClick={nextSlide}>
+          <NextButton
+            aria-label="Next Slide"
+            disabled={disableArrow === "next"}
+            onClick={nextSlide}
+          >
             <config.nextArrow />
           </NextButton>
-          <PrevButton aria-label="Previous Slide" onClick={prevSlide}>
+          <PrevButton
+            aria-label="Previous Slide"
+            disabled={disableArrow === "prev"}
+            onClick={prevSlide}
+          >
             <config.prevArrow />
           </PrevButton>
         </>

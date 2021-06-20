@@ -15,4 +15,5 @@ export const defaultConfig: SliderConfig = {
   prevArrow: DefaultPrevArrow,
   animationType: "lazy",
   delay: 2000,
+  loop: true,
 };

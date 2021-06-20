@@ -47,7 +47,9 @@ const List = styled.ol<{
   }};
 `;
 
-const Button = styled.button`
+const Button = styled.button<{
+  disabled: boolean;
+}>`
   position: absolute;
   transform: translateY(-100%);
   bottom: 0;
@@ -55,11 +57,14 @@ const Button = styled.button`
   transition: all 0.3s ease-in-out;
   background-color: transparent;
   border: none;
+  opacity: ${({ disabled }) => (disabled ? 0.3 : 1)};
+
   @media only screen and (min-width: 768px) {
     transform: translateY(-50%);
     top: 50%;
     &:hover {
-      transform: translateY(-50%) scale(1.2);
+      ${({ disabled }) =>
+        disabled ? "" : "transform: translateY(-50%) scale(1.2)"};
     }
   }
 `;

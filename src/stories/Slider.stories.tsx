@@ -20,6 +20,12 @@ const Template: Story<SliderProps> = (args) => (
     <SliderItem key={2}>
       <div style={{ backgroundColor: "green", height: "500px" }}>3</div>
     </SliderItem>
+    <SliderItem key={3}>
+      <div style={{ backgroundColor: "purple", height: "500px" }}>4</div>
+    </SliderItem>
+    <SliderItem key={4}>
+      <div style={{ backgroundColor: "black", height: "500px" }}>5</div>
+    </SliderItem>
   </Slider>
 );
 

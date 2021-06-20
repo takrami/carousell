@@ -17,6 +17,7 @@ interface GlobalConfig {
   showArrows: boolean;
   animationType: AnimationType;
   delay: number;
+  loop: boolean;
 }
 
 interface ChildrenProp {
