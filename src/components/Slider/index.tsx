@@ -17,7 +17,6 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [dragStart, setDragStart] = useState<number>(0);
   const [dragEnd, setDragEnd] = useState<number>(0);
-  const [delay, setDelay] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const sliderContainerRef = useRef<HTMLDivElement>(null);
 
@@ -41,21 +40,16 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
     }
   };
 
-  // It gets delay from data file
-  useEffect(() => {
-    setDelay(200);
-  }, [currentIndex]);
-
   // When autoplay is true and it is not hovered slides go automatically. When slide is hovered it pauses the slideshow.
   useEffect(() => {
     if (config.autoPlay && !isHovered) {
       const timeout = setTimeout(() => {
         nextSlide();
-      }, delay);
+      }, config.delay);
       return () => clearTimeout(timeout);
     }
     return;
-  }, [config.autoPlay, delay, isHovered, nextSlide]);
+  }, [config.autoPlay, config.delay, isHovered, nextSlide]);
 
   useEffect(() => {
     const handleKeyNavigation = (e: KeyboardEvent) => {

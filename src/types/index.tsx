@@ -16,6 +16,7 @@ interface GlobalConfig {
   maxWidth: string;
   showArrows: boolean;
   animationType: AnimationType;
+  delay: number;
 }
 
 interface ChildrenProp {
