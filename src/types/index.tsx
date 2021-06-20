@@ -18,6 +18,7 @@ interface GlobalConfig {
   animationType: AnimationType;
   delay: number;
   loop: boolean;
+  onSlideChange: (index: number) => void;
 }
 
 interface ChildrenProp {

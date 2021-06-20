@@ -63,6 +63,10 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
     }
   }, [config.loop, currentIndex]);
 
+  useEffect(() => {
+    config.onSlideChange(currentIndex);
+  }, [config.onSlideChange, currentIndex]);
+
   const onDrag = (): void => {
     if (dragStart < dragEnd) {
       prevSlide();

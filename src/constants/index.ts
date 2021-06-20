@@ -16,4 +16,5 @@ export const defaultConfig: SliderConfig = {
   animationType: "lazy",
   delay: 2000,
   loop: true,
+  onSlideChange: () => undefined,
 };
