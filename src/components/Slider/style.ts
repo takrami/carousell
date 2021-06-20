@@ -23,7 +23,7 @@ const List = styled.ol<{
   list-style-type: none;
   display: flex;
   width: ${({ sliderContainerWidth, slidesToShow }) =>
-    `${sliderContainerWidth / slidesToShow}px`};
+    `${(sliderContainerWidth / slidesToShow).toFixed(2)}px`};
 
   transform: ${({
     slideWidth,
@@ -47,10 +47,10 @@ const List = styled.ol<{
 
   & > li {
     width: ${({ sliderContainerWidth, slidesToShow, itemsCount }) =>
-      `${sliderContainerWidth / slidesToShow / itemsCount}px`};
+      `${(sliderContainerWidth / slidesToShow / itemsCount).toFixed(2)}px`};
   }
 
-  ${({ animationType, currentIndex }) => {
+  ${({ animationType, currentIndex, slidesToShow }) => {
     switch (animationType) {
       case "lazy":
         return `
@@ -61,11 +61,15 @@ const List = styled.ol<{
           &>li {
             opacity: 0;
           }
+
+          ${Array.from(Array(slidesToShow).keys()).map((index) => {
+            return `&>li:nth-child(${index + slidesToShow * currentIndex + 1}) {
+              transition: opacity 1s ease;
+              opacity: 1;
+            }`;
+          })}
         
-          &>li:nth-child(${currentIndex + 1}) {
-            transition: opacity 2s ease;
-            opacity: 1;
-          }
+          
         `;
       case "none":
       default:
