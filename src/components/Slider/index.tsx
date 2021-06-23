@@ -15,7 +15,8 @@ import {
 
 const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [disableArrow, setDisableArrow] = useState<"" | "next" | "prev">("");
+  const [activeNextArrow, setActiveNextArrow] = useState<boolean>(true);
+  const [activePrevArrow, setActivePrevArrow] = useState<boolean>(true);
   const [dragStart, setDragStart] = useState<number>(0);
   const [dragEnd, setDragEnd] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -28,7 +29,7 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   const slidesCount: number = Math.ceil(itemsCount / slidesToShow);
 
   const nextSlide = useCallback((): void => {
-    if (disableArrow !== "next") {
+    if (activeNextArrow) {
       if (currentIndex === slidesCount - 1) {
         if (config.loop) {
           setCurrentIndex(0);
@@ -40,7 +41,7 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   }, [currentIndex, slidesCount]);
 
   const prevSlide = useCallback((): void => {
-    if (disableArrow !== "prev") {
+    if (activePrevArrow) {
       if (currentIndex === 0) {
         if (config.loop) {
           setCurrentIndex(slidesCount - 1);
@@ -54,18 +55,19 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
   useEffect(() => {
     if (!config.loop) {
       if (currentIndex !== 0 && currentIndex !== slidesCount - 1) {
-        setDisableArrow("");
+        setActiveNextArrow(true);
+        setActivePrevArrow(true);
       }
       if (currentIndex === slidesCount - 1) {
-        setDisableArrow("next");
+        setActiveNextArrow(false);
         config.onSlideEnd(currentIndex);
       }
       if (currentIndex === 0) {
-        setDisableArrow("prev");
+        setActivePrevArrow(false);
         config.onSlideStart(currentIndex);
       }
     }
-  }, [config.loop, slidesCount]);
+  }, [config.loop, slidesCount, currentIndex]);
 
   useEffect(() => {
     config.onSlideChange(currentIndex);
@@ -146,14 +148,14 @@ const Slider: React.FC<SliderProps> = ({ children, ...passedConfig }) => {
         <>
           <NextButton
             aria-label="Next Slide"
-            disabled={disableArrow === "next"}
+            disabled={!activeNextArrow}
             onClick={nextSlide}
           >
             <config.nextArrow />
           </NextButton>
           <PrevButton
             aria-label="Previous Slide"
-            disabled={disableArrow === "prev"}
+            disabled={!activePrevArrow}
             onClick={prevSlide}
           >
             <config.prevArrow />
